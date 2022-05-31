@@ -1,7 +1,8 @@
 package teste_orientacao_a_objetos;
 import java.time.YearMonth;
 
-public class Funcionario {
+//Superclasse abstrata funcionario
+public abstract class Funcionario {
 
 	private String nome;
 	YearMonth contratacao;
@@ -26,6 +27,15 @@ public class Funcionario {
 	public YearMonth getContratacao() {
 		return this.contratacao;
 	}
+	
+	abstract public void setSalario(float salario);
+	abstract public void setBonus(float bonus);
+	abstract public void setBeneficio(float beneficio);
+
+	abstract public float getSalario();
+	abstract public float getBonus();
+	abstract public float getBeneficio();
+
 	
 	
 	

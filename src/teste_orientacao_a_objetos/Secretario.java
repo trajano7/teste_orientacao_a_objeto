@@ -8,31 +8,31 @@ public class Secretario extends Funcionario {
 		super(nome, contratacao);
 	}
 	
-	static float salario = 7000;
-	static float bonus = 1000;
-	static float beneficio = 0.2f;
+	private static float salario = 7000;
+	private static float bonus = 1000;
+	private static float beneficio = 0.2f;
 	
-	public static void setSalario(float salario) {
+	public void setSalario(float salario) {
 		Secretario.salario = salario;
 	}
 	
-	public static void setBonus(float bonus) {
+	public void setBonus(float bonus) {
 		Secretario.bonus = bonus;
 	}
 	
-	public static void setBeneficio(float beneficio) {
+	public void setBeneficio(float beneficio) {
 		Secretario.beneficio = beneficio;
 	}
 	
-	public static float getSalario() {
+	public float getSalario() {
 		return Secretario.salario;
 	}
 	
-	public static float getBonus() {
+	public float getBonus() {
 		return Secretario.bonus;
 	}
 	
-	public static float getBeneficio() {
+	public float getBeneficio() {
 		return Secretario.beneficio;
 	}
 	

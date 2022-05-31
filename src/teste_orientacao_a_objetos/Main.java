@@ -3,6 +3,7 @@ package teste_orientacao_a_objetos;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.temporal.ChronoUnit;
@@ -11,35 +12,12 @@ import java.time.temporal.Temporal;
 public class Main {
 	
 	public static void main(String[] args) {
-//		YearMonth contratacao = YearMonth.of(2022, 3);
-//		Gerente teste = new Gerente("Matheus", contratacao);
 		
 		ArrayList<Funcionario> funcionarios = new ArrayList<>();
-//		Funcionario funcionario = new Gerente("Nome", contratacao);
+		ArrayList<Funcionario> funcionariosAuxiliar;
+		YearMonth data = YearMonth.now();
 		
-//		File file = new File("dados.csv");
-//		try {
-//			Scanner scanner = new Scanner(file);
-//			scanner.useDelimiter(",");
-//			while (scanner.hasNextLine()) {
-//				String s[] = scanner.nextLine().split(",");
-//				String contratacao[] = s[2].split("/");
-//				if (s[1] == "Secretário") {
-//					funcionarios.add(new Secretario(s[0],YearMonth.of(, 0)));
-//				}
-//				else if(s[1] == "Vendedor") {
-//					
-//				}
-//				else {
-//					
-//				}
-//				System.out.println(scanner.nextLine());
-//			}
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}	
-		
+		//Inicializa todos os objetos necessarios
 		ArrayList<Venda> vendas1 = new ArrayList<>();
 		vendas1.add(new Venda(YearMonth.of(2021, 12),5200));
 		vendas1.add(new Venda(YearMonth.of(2022, 1),4000));
@@ -61,19 +39,63 @@ public class Main {
 		funcionarios.add(new Gerente("Juliana Alves",YearMonth.of(2017, 07)));
 		funcionarios.add(new Gerente("Bento Albino",YearMonth.of(2014, 03)));
 		
+		Calculadora calculadora = new Calculadora();
 		
-		Gerenciadora gerenciadora = new Gerenciadora();
-		gerenciadora.valorTotalSB(funcionarios);
+		//Input e chamada do metodo escolhido
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Escolha uma opção: \n"
+							+ "0. Valor total pago em salários e benefícios\n"
+							+ "1. Valor total pago em salários\n"
+							+ "2. Valor total pago em benefícios\n"
+							+ "3. Funcionário mais bem pago\n"
+							+ "4. Funcionário que recebeu mais benefício\n"
+							+ "5. Melhor vendedor\n");
+		int i = scan.nextInt();
+		System.out.println("Digite o mês e ano que deseja no formato 'ano-mês' (ex: 2022-05):");
+		String s = scan.next();
 		
+		try {
+			data = YearMonth.parse(s);	
+		}
+		catch(DateTimeParseException a) {
+			System.out.println("Data em formato errado!");
+			return;
+		}
 		
-		if (funcionarios.get(4) instanceof Gerente) {
-			System.out.println("Gerente");
-		};
-		
-		
-
-		
-		System.out.println("Hello World!");
+		switch (i) {
+			case 0:
+				System.out.println("Valor total pago (salarios/beneficios): ");
+				System.out.println(calculadora.valorTotalSB(funcionarios, data));
+				break;
+			case 1:
+				System.out.println("Valor total pago (salarios): ");
+				System.out.println(calculadora.valorTotalS(funcionarios, data));
+				break;
+			case 2:
+				System.out.println("Valor total pago (beneficios): ");
+				funcionariosAuxiliar = (ArrayList<Funcionario>) funcionarios.clone();
+				funcionariosAuxiliar.removeIf(funcionario -> (funcionario instanceof Gerente));
+				System.out.println(calculadora.valorTotalB(funcionariosAuxiliar, data));
+				break;
+			case 3:
+				System.out.println("Funcionario mais bem pago: ");
+				System.out.println(calculadora.valorMaisAltoSB(funcionarios, data));
+				break;
+			case 4: 
+				System.out.println("Funcionario que recebeu mais beneficios: ");
+				funcionariosAuxiliar = (ArrayList<Funcionario>) funcionarios.clone();
+				funcionariosAuxiliar.removeIf(funcionario -> (funcionario instanceof Gerente));
+				System.out.println(calculadora.valorMaisAltoB(funcionariosAuxiliar, data));
+				break;
+			case 5:
+				System.out.println("Vendedor que vendeu mais: ");
+				funcionariosAuxiliar = (ArrayList<Funcionario>) funcionarios.clone();
+				funcionariosAuxiliar.removeIf(funcionario -> !(funcionario instanceof Vendedor));
+				System.out.println(calculadora.melhorVendedor(funcionariosAuxiliar, data));
+				break;
+			default:
+				System.out.println("Essa opção não é válida!");
+		}
 		
 		
 	}

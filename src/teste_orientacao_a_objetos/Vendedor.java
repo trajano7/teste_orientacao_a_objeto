@@ -10,32 +10,32 @@ public class Vendedor extends Funcionario {
 		this.listaDeVendas = vendas;
 	}
 	
-	static float salario = 12000;
-	static float bonus = 1800;
-	static float beneficio = 0.3f;
-	ArrayList<Venda> listaDeVendas;
+	private static float salario = 12000;
+	private static float bonus = 1800;
+	private static float beneficio = 0.3f;
+	private ArrayList<Venda> listaDeVendas;
 	
-	public static void setSalario(float salario) {
+	public void setSalario(float salario) {
 		Vendedor.salario = salario;
 	}
 	
-	public static void setBonus(float bonus) {
+	public void setBonus(float bonus) {
 		Vendedor.bonus = bonus;
 	}
 	
-	public static void setBeneficio(float beneficio) {
+	public void setBeneficio(float beneficio) {
 		Vendedor.beneficio = beneficio;
 	}
 	
-	public static float getSalario() {
+	public float getSalario() {
 		return Vendedor.salario;
 	}
 	
-	public static float getBonus() {
+	public float getBonus() {
 		return Vendedor.bonus;
 	}
 	
-	public static float getBeneficio() {
+	public float getBeneficio() {
 		return Vendedor.beneficio;
 	}
 	

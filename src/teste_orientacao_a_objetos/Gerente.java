@@ -7,23 +7,33 @@ public class Gerente extends Funcionario {
 		super(nome, contratacao);
 	}
 	
-	static float salario = 20000;
-	static float bonus = 3000;
+	private static float salario = 20000;
+	private static float bonus = 3000;
+	private static float beneficio = 0;
 	
-	public static void setSalario(float salario) {
+	public void setSalario(float salario) {
 		Gerente.salario = salario;
 	}
 	
-	public static void setBonus(float bonus) {
+	public void setBonus(float bonus) {
 		Gerente.bonus = bonus;
 	}
 		
-	public static float getSalario() {
+	public void setBeneficio(float beneficio) {
+		Gerente.beneficio = beneficio;	
+	}
+	
+	public float getSalario() {
 		return Gerente.salario;
 	}
 	
-	public static float getBonus() {
+	public float getBonus() {
 		return Gerente.bonus;
+	}
+
+
+	public float getBeneficio() {
+		return Gerente.beneficio;
 	}
 	
 	
