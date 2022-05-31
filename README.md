@@ -1,1 +1,3 @@
-# teste_orientacao_a_objeto
+Teste de orientacão a objeto em Java.
+
+Feito em Java 16 utilizando a IDE Eclipse.
