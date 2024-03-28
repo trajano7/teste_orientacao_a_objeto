@@ -1,166 +1,114 @@
 package teste_orientacao_a_objetos;
 
 import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
 
 public class Calculadora {
 	
-	//Procura e retorna a venda de um vendedor em um dado mes
-	private float calcularBeneficioDeVendas(ArrayList<Venda> listaDeVendas, YearMonth data) {
-		
-		for(Venda venda : listaDeVendas) {
-		   if (venda.dataDaVenda.equals(data)) {
-			  return venda.getValorDaVenda(); 
-		   }
-		}
-		
-		return 0;
-	}
-	
-	//Metodo responsavel por calcular o valor total pago em sal·rios e beneficios
-	public float valorTotalSB(ArrayList<Funcionario> funcionarios, YearMonth data) {
-		float montante = 0, beneficio, valorEmVendas, salario;
-		long anosDeServico;
+	//Metodo responsavel por calcular o valor total pago em salarios e beneficios em um determinado mes de um determinado ano,
+	//dado uma lista de funcionarios
+	public float getTotalPago(ArrayList<Funcionario> funcionarios, YearMonth data) {
+		float montante = 0;
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yyyy");    
+        //String dataFormatada = data.format(formatter);
 		
 		for(Funcionario funcionario : funcionarios) {
 			
-			System.out.println(funcionario.getNome());
-			System.out.println(funcionario.getContratacao().toString());
-			System.out.println(funcionario.contratacao.until(YearMonth.now(), ChronoUnit.YEARS));
+			// Debug print
+			/*
+			System.out.println("Nome: " + funcionario.getNome());
+			System.out.println("Data de Contratacao: " + funcionario.getContratacao().toString());
+			System.out.println("Anos de Servico at√© " + dataFormatada +  ": " + funcionario.contratacao.until(data, ChronoUnit.YEARS));
+			System.out.println("");	
+			*/
 			
-			anosDeServico = funcionario.contratacao.until(data, ChronoUnit.YEARS);
-			
-			salario = funcionario.getSalario() + funcionario.getBonus()*anosDeServico;
-			montante += salario;
-			beneficio = funcionario.getBeneficio();
-			
-			if (funcionario instanceof Secretario) {
-				montante += beneficio*salario;
-			}
-			else if (funcionario instanceof Vendedor) {
-				valorEmVendas = calcularBeneficioDeVendas(((Vendedor)(funcionario)).getListaDeVendas(),data);
-				montante += valorEmVendas*beneficio;
-			}	
+			montante += funcionario.getSalario(data);
+			montante += funcionario.getBeneficio(data);
+				
 		}
-		
-		System.out.println(montante);
 			
 		return montante;
 	}
 	
 	//Metodo responsavel por calcular o valor total pago em salarios
-	public float valorTotalS(ArrayList<Funcionario> funcionarios, YearMonth data) {
-		float montante = 0, salario;
-		long anosDeServico;
+	public float getTotalSalario(ArrayList<Funcionario> funcionarios, YearMonth data) {
+		float montante = 0;
 		
 		for(Funcionario funcionario : funcionarios) {
-			
-			anosDeServico = funcionario.contratacao.until(data, ChronoUnit.YEARS);
-			
-			salario = funcionario.getSalario() + funcionario.getBonus()*anosDeServico;
-			montante += salario;
+			montante += funcionario.getSalario(data);
 		}
 		
 		return montante;
 		
 	}
 	
-	//Metodo responsavel por o valor total pago em benefÌcios
-	public float valorTotalB(ArrayList<Funcionario> funcionariosComBenefico, YearMonth data) {
-		float montante = 0, beneficio, valorEmVendas, salario;
-		long anosDeServico;
+	//Metodo responsavel por o valor total pago em beneficios
+	public float getTotalBeneficio(ArrayList<Funcionario> funcionariosComBenefico, YearMonth data) {
+		float montante = 0;
 		
-		for(Funcionario funcionario : funcionariosComBenefico) {
-			
-			anosDeServico = funcionario.contratacao.until(data, ChronoUnit.YEARS);
-			
-			salario = funcionario.getSalario() + funcionario.getBonus()*anosDeServico;
-			beneficio = funcionario.getBeneficio();
-			
-			if (funcionario instanceof Secretario) {
-				montante += beneficio*salario;
-			}
-			else if (funcionario instanceof Vendedor) {
-				valorEmVendas = calcularBeneficioDeVendas(((Vendedor)(funcionario)).getListaDeVendas(),data);
-				montante += valorEmVendas*beneficio;
-			}	
+		for(Funcionario funcionario : funcionariosComBenefico) {	
+			montante += funcionario.getBeneficio(data);
 		}
 
 		return montante;
 	}
 	
-	//Metodo responsavel por achar o funcion·rio mais bem pago
-	public String valorMaisAltoSB(ArrayList<Funcionario> funcionarios, YearMonth data) {
+	//Metodo responsavel por achar o funcionario mais bem pago
+	public String getMelhorPago(ArrayList<Funcionario> funcionarios, YearMonth data) {
 		String funcionarioMaisPago = "";
-		float valorGanho = 0, beneficio, valorEmVendas, salario, valorMaisAlto = 0;
-		long anosDeServico;
+		float valorGanho = 0, valorMaisAlto = 0;
 		
 		for(Funcionario funcionario : funcionarios) {
 				
-			anosDeServico = funcionario.contratacao.until(data, ChronoUnit.YEARS);
-				
-			salario = funcionario.getSalario() + funcionario.getBonus()*anosDeServico;
-			valorGanho += salario;
-			beneficio = funcionario.getBeneficio();
-				
-			if (funcionario instanceof Secretario) {
-				valorGanho += beneficio*salario;
-			}
-			else if (funcionario instanceof Vendedor) {
-				valorEmVendas = calcularBeneficioDeVendas(((Vendedor)(funcionario)).getListaDeVendas(),data);
-				valorGanho += valorEmVendas*beneficio;
-			}	
+			valorGanho += funcionario.getSalario(data);
+			valorGanho += funcionario.getBeneficio(data);
 			
 			if (valorGanho >= valorMaisAlto) {
 				valorMaisAlto = valorGanho;
 				funcionarioMaisPago = funcionario.getNome();
 			}
 			
+			valorGanho = 0;
+			
 		}
 				
+			if (valorMaisAlto == 0) {
+				return "N√£o h√° registro de nenhum funcionario contratado nesta data.";
+			}
 			return funcionarioMaisPago;
 	}
 	
-	//Metodo responsavel por achar o funcion·rio que recebeu mais benefÌcio
-	public String valorMaisAltoB(ArrayList<Funcionario> funcionariosComBenefico, YearMonth data) {
+	//Metodo responsavel por achar o funcionario que recebeu o maior beneficio em um determinado mes de um determinado ano
+	public String getMelhorBeneficiado(ArrayList<Funcionario> funcionariosComBenefico, YearMonth data) {
 		String funcionarioMaisPago = "";
-		float valorGanho = 0, beneficio, valorEmVendas, salario, valorMaisAlto = 0;
-		long anosDeServico;
+		float beneficio = 0, beneficioMaisAlto = 0;
 		
 		for(Funcionario funcionario : funcionariosComBenefico) {
 			
-			anosDeServico = funcionario.contratacao.until(data, ChronoUnit.YEARS);
+			beneficio = funcionario.getBeneficio(data);
 			
-			salario = funcionario.getSalario() + funcionario.getBonus()*anosDeServico;
-			beneficio = funcionario.getBeneficio();
-			
-			if (funcionario instanceof Secretario) {
-				valorGanho += beneficio*salario;
-			}
-			else if (funcionario instanceof Vendedor) {
-				valorEmVendas = calcularBeneficioDeVendas(((Vendedor)(funcionario)).getListaDeVendas(),data);
-				valorGanho += valorEmVendas*beneficio;
-			}	
-			
-			if (valorGanho >= valorMaisAlto) {
-				valorMaisAlto = valorGanho;
+			if (beneficio >= beneficioMaisAlto) {
+				beneficioMaisAlto = beneficio;
 				funcionarioMaisPago = funcionario.getNome();
 			}
 			
 		}
 		
+		if (beneficioMaisAlto == 0) {
+			return "N√£o h√° registro de nenhum funcionario contratado nesta data.";
+		}
 		return funcionarioMaisPago;
 	}
 	
 	//Metodo responsavel por achar o melhor vendedor
-	public String melhorVendedor(ArrayList<Funcionario> funcionarios, YearMonth data) {
+	public String getMelhorVendedor(ArrayList<Funcionario> funcionarios, YearMonth data) {
 		String melhorVendedor = "";
 		float valorEmVendas, valorMaisAlto = 0;
 		
 		for(Funcionario funcionario : funcionarios) {
 			
-			valorEmVendas = calcularBeneficioDeVendas(((Vendedor)(funcionario)).getListaDeVendas(),data);
+			valorEmVendas = ((Vendedor) funcionario).getValorDeVendas(data);
 			
 			if (valorEmVendas >= valorMaisAlto) {
 				valorMaisAlto = valorEmVendas;
@@ -169,6 +117,9 @@ public class Calculadora {
 			
 		}
 		
+		if (valorMaisAlto == 0) {
+			return "N√£o h√° registro de nenhum vendedor contratado nesta data ou n√£o houve nenhuma venda.";
+		}
 		return melhorVendedor;
 	}
 		

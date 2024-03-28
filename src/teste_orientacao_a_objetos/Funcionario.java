@@ -28,15 +28,8 @@ public abstract class Funcionario {
 		return this.contratacao;
 	}
 	
-	abstract public void setSalario(float salario);
-	abstract public void setBonus(float bonus);
-	abstract public void setBeneficio(float beneficio);
-
-	abstract public float getSalario();
-	abstract public float getBonus();
-	abstract public float getBeneficio();
-
-	
-	
-	
+	// Retorna o salario do funcionario em um determinado mes e ano
+	abstract public float getSalario(YearMonth data);
+	// Retorna o beneficio do funcionario em um determinado mes e ano
+	abstract public float getBeneficio(YearMonth data);
 }

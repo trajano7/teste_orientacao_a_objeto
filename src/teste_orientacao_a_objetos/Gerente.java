@@ -1,5 +1,6 @@
 package teste_orientacao_a_objetos;
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 
 
 public class Gerente extends Funcionario {
@@ -7,34 +8,16 @@ public class Gerente extends Funcionario {
 		super(nome, contratacao);
 	}
 	
-	private static float salario = 20000;
+	private static float salarioBase = 20000;
 	private static float bonus = 3000;
 	private static float beneficio = 0;
 	
-	public void setSalario(float salario) {
-		Gerente.salario = salario;
+	public float getSalario(YearMonth data) {
+		long anosDeServico = this.contratacao.until(data, ChronoUnit.YEARS);
+		return anosDeServico >= 0 ? Gerente.salarioBase + Gerente.bonus*anosDeServico : 0;
 	}
 	
-	public void setBonus(float bonus) {
-		Gerente.bonus = bonus;
+	public float getBeneficio(YearMonth data) {
+		return beneficio;
 	}
-		
-	public void setBeneficio(float beneficio) {
-		Gerente.beneficio = beneficio;	
-	}
-	
-	public float getSalario() {
-		return Gerente.salario;
-	}
-	
-	public float getBonus() {
-		return Gerente.bonus;
-	}
-
-
-	public float getBeneficio() {
-		return Gerente.beneficio;
-	}
-	
-	
 }

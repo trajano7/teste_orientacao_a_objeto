@@ -1,6 +1,7 @@
 package teste_orientacao_a_objetos;
 
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Vendedor extends Funcionario {
@@ -10,37 +11,35 @@ public class Vendedor extends Funcionario {
 		this.listaDeVendas = vendas;
 	}
 	
-	private static float salario = 12000;
+	private static float salarioBase = 12000;
 	private static float bonus = 1800;
 	private static float beneficio = 0.3f;
 	private ArrayList<Venda> listaDeVendas;
 	
-	public void setSalario(float salario) {
-		Vendedor.salario = salario;
+	public float getSalario(YearMonth data) {
+		long anosDeServico = this.contratacao.until(data, ChronoUnit.YEARS);
+		return anosDeServico >= 0 ? Vendedor.salarioBase + Vendedor.bonus*anosDeServico : 0;
 	}
 	
-	public void setBonus(float bonus) {
-		Vendedor.bonus = bonus;
-	}
-	
-	public void setBeneficio(float beneficio) {
-		Vendedor.beneficio = beneficio;
-	}
-	
-	public float getSalario() {
-		return Vendedor.salario;
-	}
-	
-	public float getBonus() {
-		return Vendedor.bonus;
-	}
-	
-	public float getBeneficio() {
-		return Vendedor.beneficio;
+	public float getBeneficio(YearMonth data) {
+		float valorEmVendas = getValorDeVendas(data);
+		return Vendedor.beneficio*valorEmVendas;
 	}
 	
 	public ArrayList<Venda> getListaDeVendas() {
 		return listaDeVendas;
+	}
+	
+	//Procura e retorna o valor em vendas de um vendedor em um determinado mes
+	public float getValorDeVendas(YearMonth data) {
+		
+		for(Venda venda : this.listaDeVendas) {
+		   if (venda.dataDaVenda.equals(data)) {
+			  return venda.getValorDaVenda(); 
+		   }
+		}
+		
+		return 0;
 	}
 	
 }
